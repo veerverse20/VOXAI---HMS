@@ -1,0 +1,134 @@
+@import "../style.css";
+
+/* Patient Login & Portal View Stylesheet */
+body {
+  background-color: #0d9488; /* Teal/emerald backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  background: #f0fdfa; /* Light teal tint */
+  border-radius: 20px;
+  width: 900px;
+  max-width: 95%;
+  min-height: 480px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-left {
+  flex: 1;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-left h1 {
+  font-size: 36px;
+  color: #115e59;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.login-left p {
+  color: #0f766e;
+  font-size: 15px;
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.user-icon-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ccfbf1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0d9488;
+  margin-top: auto;
+}
+
+.login-right {
+  width: 380px;
+  background: #ffffff;
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid #e2e8f0;
+}
+
+.login-right h2 {
+  font-size: 20px;
+  color: #0f766e;
+  margin-bottom: 28px;
+  font-weight: 800;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  font-weight: 500;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #0f766e;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.btn-patient {
+  background-color: #0f766e;
+  color: white;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-patient:hover {
+  background-color: #115e59;
+}
+
+.login-footer-links {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.login-footer-links a {
+  color: #0d9488;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-footer-links a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Portal - Dashboard</title>
+  <link rel="stylesheet" href="css/doctor-dashboard.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50/50">
+
+  <div class="min-h-screen w-full flex bg-[#eff6ff]/35 overflow-hidden">
+    
+    <!-- Left blue sidebar (Matches React app) -->
+    <aside class="w-64 bg-[#1e40af] flex flex-col justify-between text-white select-none shrink-0 min-h-screen">
+      <div>
+        <div class="p-6">
+          <h2 class="text-xl font-bold uppercase tracking-wider font-sans">VoxAI HMS</h2>
+        </div>
+
+        <nav class="mt-4 px-2 flex flex-col gap-1.5">
+          <button id="tabBtn-dashboard" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer bg-[#3b82f6]/40 text-white shadow-md">
+            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+            Dashboard
+          </button>
+
+          <button id="tabBtn-schedule" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#1d4ed8] text-blue-50">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            Schedule
+          </button>
+
+          <button id="tabBtn-patients" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#1d4ed8] text-blue-50">
+            <i data-lucide="user" class="w-4 h-4"></i>
+            My Patients
+          </button>
+
+          <button id="tabBtn-notes" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#1d4ed8] text-blue-50">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            Dictation Notes
+          </button>
+
+          <button id="tabBtn-settings" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#1d4ed8] text-blue-50">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+            Settings
+          </button>
+        </nav>
+      </div>
+
+      <!-- Logout button -->
+      <div class="p-4 flex flex-col gap-2">
+        <button id="logoutBtn" class="w-full bg-[#ef4444] hover:bg-red-700 text-white rounded-lg p-2.5 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Right Content area -->
+    <div class="flex-1 bg-slate-50/55 p-6 flex flex-col overflow-y-auto relative">
+      
+      <!-- Header Welcome Bar -->
+      <div class="flex items-start justify-between border-b border-blue-100 pb-4 mb-6">
+        <div>
+          <h1 id="welcomeGreeting" class="text-2xl font-bold text-blue-900 font-sans tracking-tight">Hello, Doctor!</h1>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-bold text-slate-500 font-sans pt-1">
+          <span id="headerDate">Sunday, June 28, 2026</span>
+          <div class="flex items-center gap-2 border-l pl-4 border-slate-200">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-sans">Status:</span>
+            <span id="availStatus" class="font-bold font-mono tracking-wider text-green-600">PRESENT</span>
+            <button id="toggleAvailBtn" class="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-3.5 py-1.5 rounded-lg text-[10px] uppercase transition-all cursor-pointer shadow-sm">
+              Mark Absent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab 1: Main Doctor Dashboard View -->
+      <div id="tabContent-dashboard" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Column: Appointments queue, chart notes and prescriptions log -->
+        <div class="lg:col-span-8 flex flex-col gap-6">
+          
+          <!-- Queue List -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider pb-2 border-b">Appointments for Today</h3>
+            <div id="doctorQueue" class="flex flex-col gap-3">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- EHR Chart Editor -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <div class="flex justify-between items-center pb-2 border-b">
+              <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider">Clinical Overview Notes</h3>
+              <span id="saveBadge" class="hidden text-[10px] bg-green-50 border border-green-200 text-green-700 font-bold px-2 py-0.5 rounded">
+                Saved to EHR!
+              </span>
+            </div>
+            <textarea id="chartNotes" placeholder="Document patient consultation charts here..." class="w-full h-32 border border-slate-200 rounded-xl p-3 text-xs text-slate-850 font-semibold focus:bg-white outline-none focus:border-blue-500 resize-none"></textarea>
+            <button id="saveChartBtn" class="self-start bg-[#1e40af] hover:bg-blue-700 text-white text-xs font-bold uppercase px-4 py-2.5 rounded-lg tracking-wider transition-colors cursor-pointer shadow-sm">
+              Save Chart Record
+            </button>
+          </div>
+
+          <!-- Prescription Builder & History Panel -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider pb-2 border-b">Prescriptions Issued Log</h3>
+            <div id="prescriptionsGrid" class="flex flex-col gap-3 max-h-[220px] overflow-y-auto pr-1">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Consultation form, next up metrics & alerts -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+          
+          <!-- Issue New Prescription form -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <h3 class="font-bold text-blue-900 text-xs uppercase tracking-wider pb-2 border-b">Issue New Prescription</h3>
+            
+            <div id="prescriptionBanner" class="hidden bg-green-50 border border-green-250 text-green-700 rounded-lg p-2.5 text-xs font-semibold"></div>
+
+            <form id="rxForm" class="flex flex-col gap-3 text-xs text-slate-800">
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-500 uppercase text-[9px]">Prescription ID</label>
+                <input type="text" id="rxId" required class="font-mono font-bold bg-slate-50 border p-2.5 rounded-lg">
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-500 uppercase text-[9px]">Select Patient</label>
+                <select id="rxPatientSelect" required class="bg-slate-50 border p-2.5 rounded-lg font-bold">
+                  <!-- Loaded dynamically -->
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-500 uppercase text-[9px]">Diagnosis</label>
+                <input type="text" id="rxDiagnosis" placeholder="e.g. Hypertension" required class="bg-slate-50 border p-2.5 rounded-lg font-semibold">
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-500 uppercase text-[9px]">Medications & dosage instructions</label>
+                <textarea id="rxMedications" placeholder="e.g. Amlodipine 5mg once daily" rows="3" required class="bg-slate-50 border p-2.5 rounded-lg h-20 resize-none font-mono"></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-lg uppercase tracking-wider transition-colors cursor-pointer shadow-sm">
+                Issue & Sync Prescription
+              </button>
+            </form>
+          </div>
+
+          <!-- Next Patient Metrics -->
+          <div class="bg-white rounded-2xl border border-l-4 border-l-green-500 border-slate-200 shadow-md p-5 flex flex-col gap-3">
+            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Next Consultation</h3>
+            <div>
+              <div id="nextPatTime" class="text-lg font-bold text-blue-800">11:30 AM</div>
+              <div id="nextPatName" class="text-sm font-bold text-slate-800 mt-0.5">Rohan Das</div>
+              <div id="nextPatReason" class="text-xs text-slate-550 mt-1 font-semibold leading-relaxed">
+                Reason: Thyroid Follow-up checks
+              </div>
+            </div>
+            <button id="viewChartBtn" class="w-full bg-[#3b82f6] hover:bg-blue-600 text-white font-bold text-xs uppercase py-2 rounded-lg tracking-wider transition-colors cursor-pointer shadow-sm">
+              View Chart Summary
+            </button>
+          </div>
+
+          <!-- Urgent Notifications -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-3">
+            <h3 class="font-bold text-red-600 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-red-500"></i>
+              <span class="text-slate-800">Clinical Alerts</span>
+            </h3>
+            <div class="flex flex-col gap-2.5 text-xs">
+              <div class="p-2.5 bg-red-50 border border-red-100 rounded-lg text-red-800 font-semibold leading-relaxed">
+                Lab Result Alert: Patient PAT1204 - Thyroid Panel available
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Subtab 2: Schedule -->
+      <div id="tabContent-schedule" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 max-w-md">
+        <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Duty Schedule Rosters</h3>
+        <div id="scheduleRoster" class="flex flex-col gap-3">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- Subtab 3: Patients -->
+      <div id="tabContent-patients" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6">
+        <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Clinical Patient Registry</h3>
+        <div id="patientsListGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- Subtab 4: Dictation Notes -->
+      <div id="tabContent-notes" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6">
+        <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">NLU Transcript Auditing</h3>
+        <div id="notesAuditGrid" class="flex flex-col gap-3 max-h-[420px] overflow-y-auto">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- Subtab 5: Settings (EHR Tables resetting & Code Explorer) -->
+      <div id="tabContent-settings" class="hidden flex flex-col gap-6">
+        <!-- Database Ledgers reset -->
+        <div id="dbInspectorContainer">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- Floating mic button -->
+      <a href="voxmic.html" class="fixed bottom-12 right-12 h-14 w-14 rounded-full flex items-center justify-center border border-blue-500 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl z-50 transition-transform active:scale-95">
+        <i data-lucide="mic" class="w-5 h-5"></i>
+      </a>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="js/doctor-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxAI Switchboard Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen font-sans">
+  
+  <div class="text-center flex flex-col items-center gap-4">
+    <!-- Pulsing spinner -->
+    <div class="w-12 h-12 border-4 border-t-indigo-500 border-indigo-200/20 rounded-full animate-spin"></div>
+    <h2 class="text-lg font-bold uppercase tracking-wider text-slate-350">VoxAI HMS Security Switchboard</h2>
+    <p class="text-xs text-slate-500 font-semibold font-mono">Authenticating session variables... Routing to dashboard view.</p>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const session = window.HMS_DB.getSession();
+      
+      if (session) {
+        if (session.role === "patient") {
+          window.location.href = "patient-dashboard.html";
+        } else if (session.role === "doctor") {
+          window.location.href = "doctor-dashboard.html";
+        } else if (session.role === "admin") {
+          window.location.href = "admin-dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } else {
+        // Fallback to index
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>

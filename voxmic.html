@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxAI - Voice Assistant Console</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Styling wave visualizer bars */
+    .wave-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      height: 40px;
+    }
+    .wave-bar {
+      width: 4px;
+      height: 8px;
+      background-color: #6366f1;
+      border-radius: 2px;
+      transition: height 0.15s ease;
+    }
+    .wave-bar.active {
+      animation: wave-bounce 0.8s ease infinite alternate;
+    }
+    .wave-bar.active:nth-child(2) { animation-delay: 0.1s; }
+    .wave-bar.active:nth-child(3) { animation-delay: 0.25s; }
+    .wave-bar.active:nth-child(4) { animation-delay: 0.4s; }
+    .wave-bar.active:nth-child(5) { animation-delay: 0.55s; }
+
+    @keyframes wave-bounce {
+      0% { height: 8px; }
+      100% { height: 35px; }
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #374151;
+      color: #9ca3af;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+    .status-badge.recording {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-center items-center p-6 font-sans select-none">
+
+  <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center gap-6 shadow-2xl">
+    
+    <!-- Top info header -->
+    <div class="text-center flex flex-col items-center gap-2">
+      <div id="statusBadge" class="status-badge">Standby</div>
+      <h1 class="text-2xl font-bold uppercase tracking-wider font-sans mt-2">VoxAI Intake Terminal</h1>
+      <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+        Speak commands directly, or type them into the transcription field to execute.
+      </p>
+    </div>
+
+    <!-- Active pulse Waveform Visualizer -->
+    <div class="wave-container my-2">
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+    </div>
+
+    <!-- Microphone Intake trigger -->
+    <button id="micBtn" class="w-20 h-20 rounded-full bg-indigo-600 hover:bg-indigo-500 border-4 border-indigo-700/50 flex items-center justify-center cursor-pointer shadow-xl transition-all duration-300 transform active:scale-95 text-white">
+      <i data-lucide="mic" class="w-8 h-8"></i>
+    </button>
+
+    <!-- Text area for live Speech-to-Text transcriptions -->
+    <div class="w-full flex flex-col gap-2">
+      <label class="text-[9px] font-mono uppercase tracking-widest text-slate-500 font-bold">Speech Transcription Output</label>
+      <textarea id="transcriptionText" class="w-full h-28 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs leading-relaxed text-slate-300 focus:outline-none focus:border-indigo-500 font-semibold resize-none outline-none font-mono" placeholder="Ingested speech transcript details display here. Tap the mic above to speak..."></textarea>
+    </div>
+
+    <!-- Actions button -->
+    <div class="w-full flex gap-3">
+      <button id="processBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold p-3 text-xs uppercase rounded-xl tracking-wider transition-colors cursor-pointer shadow-md">
+        Execute Command
+      </button>
+      
+      <button onclick="window.history.back()" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs uppercase font-bold rounded-xl transition-colors cursor-pointer">
+        Back
+      </button>
+    </div>
+
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="voxai.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

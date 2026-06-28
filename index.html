@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to VoxAI HMS</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 50%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .welcome-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px;
+      width: 760px;
+      max-width: 90%;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.3);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    @media(max-width: 768px) {
+      .welcome-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px;
+      }
+      .portals-list {
+        width: 100% !important;
+      }
+    }
+    .left-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .avatar-container {
+      margin: 24px 0;
+      background: #f8fafc;
+      border-radius: 50%;
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    .avatar-svg {
+      width: 140px;
+      height: 140px;
+    }
+    .hint-badge {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+    .mic-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #1e40af;
+      border: 2px solid #60a5fa;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 10px 15px -3px rgba(30, 64, 175, 0.4);
+      transition: all 0.2s ease;
+    }
+    .mic-btn:hover {
+      background-color: #1d4ed8;
+      transform: scale(1.05);
+    }
+    .portals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 240px;
+    }
+    .portal-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background-color: #0ea5e9;
+      color: white;
+      font-weight: 750;
+      font-size: 14px;
+      padding: 14px 0;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .portal-btn:hover {
+      background-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-card">
+    <!-- Left Section: Avatar & Mic Action -->
+    <div class="left-section">
+      <h1 style="font-size: 32px; color: #1e3a8a; line-height: 1.1;">Welcome</h1>
+      <h1 style="font-size: 32px; color: #1e3a8a; line-height: 1.1; margin-top: 4px;">To VoxAI HMS</h1>
+      
+      <div class="avatar-container">
+        <!-- SVG Clinician Avatar -->
+        <svg viewBox="0 0 200 200" class="avatar-svg">
+          <circle cx="100" cy="100" r="95" fill="#f8fafc" />
+          <path d="M50 120 C50 60, 150 60, 150 120 C150 140, 140 160, 140 160 C140 160, 130 110, 100 110 C70 110, 60 160, 60 160 C60 160, 50 140, 50 120 Z" fill="#475569" />
+          <path d="M55 170 C55 140, 75 125, 100 125 C125 125, 145 140, 145 170 Z" fill="#f97316" />
+          <path d="M85 125 L100 145 L115 125 Z" fill="#ffedd5" />
+          <rect x="90" y="105" width="20" height="25" fill="#ffedd5" rx="5" />
+          <circle cx="100" cy="80" r="32" fill="#ffedd5" />
+          <path d="M68 80 C68 45, 132 45, 132 80 C132 50, 68 50, 68 80 Z" fill="#475569" />
+          <path d="M68 70 C75 55, 95 62, 100 68 C105 62, 125 55, 132 70 C125 52, 75 52, 68 70 Z" fill="#334155" />
+        </svg>
+      </div>
+
+      <div class="hint-badge">
+        Say "Open patient" or "Doctor section"
+      </div>
+
+      <!-- Launch Microphone assistant page -->
+      <a href="voxmic.html" class="mic-btn" title="Open Voice Command Assistant">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      </a>
+    </div>
+
+    <!-- Right Section: Portal Links -->
+    <div class="portals-list">
+      <a href="patient.html" class="portal-btn" style="background-color: #0d9488;">Patient Portal</a>
+      <a href="doctor.html" class="portal-btn" style="background-color: #2563eb;">Doctor Portal</a>
+      <a href="admin.html" class="portal-btn" style="background-color: #581c87;">Admin Portal</a>
+      <a href="vox.html" class="portal-btn" style="background-color: #0369a1;">Voice Assistant</a>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="voxai.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const session = window.HMS_DB.getSession();
+      if (session) {
+        if (session.role === "patient") window.location.href = "patient-dashboard.html";
+        else if (session.role === "doctor") window.location.href = "doctor-dashboard.html";
+        else if (session.role === "admin") window.location.href = "admin-dashboard.html";
+      }
+    });
+  </script>
+</body>
+</html>

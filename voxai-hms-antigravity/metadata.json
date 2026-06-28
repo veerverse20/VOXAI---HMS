@@ -1,0 +1,6 @@
+{
+  "name": "VoxAI HMS Assistant",
+  "description": "Voice AI Healthcare Assistant module with Django backend components, MySQL database simulation, and an interactive voice command console.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

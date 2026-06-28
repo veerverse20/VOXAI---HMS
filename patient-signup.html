@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration - VoxAI HMS</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen w-full bg-[#f0fdfa] flex items-center justify-center p-6 font-sans select-none">
+
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+    <!-- Top banner header -->
+    <div class="bg-[#0f766e] text-white p-6 text-center flex flex-col items-center gap-2">
+      <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-teal-100">
+        <i data-lucide="user-plus" class="w-6 h-6"></i>
+      </div>
+      <h1 class="text-xl font-bold uppercase tracking-wider font-sans mt-2">Patient Signup</h1>
+      <p class="text-3xs text-teal-100/70 font-semibold uppercase tracking-widest leading-relaxed">
+        VoxAI Healthcare Portal Intake Registry
+      </p>
+    </div>
+
+    <!-- Signup Form -->
+    <form id="signupForm" class="p-8 flex flex-col gap-4 text-xs text-slate-800">
+      
+      <div id="errorBanner" class="hidden bg-red-50 border border-red-200 text-red-750 p-2.5 rounded-lg text-center font-semibold"></div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="font-bold text-slate-550 uppercase text-[9px] tracking-wider">Full Patient Name</label>
+        <input type="text" id="regName" required placeholder="e.g. Rohan Das" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg text-xs font-bold outline-none focus:border-teal-500">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="font-bold text-slate-550 uppercase text-[9px] tracking-wider">Age</label>
+          <input type="number" id="regAge" required placeholder="e.g. 34" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg text-xs font-bold outline-none focus:border-teal-500 font-mono">
+        </div>
+        
+        <div class="flex flex-col gap-1.5">
+          <label class="font-bold text-slate-550 uppercase text-[9px] tracking-wider">Gender</label>
+          <select id="regGender" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg text-xs font-bold outline-none focus:border-teal-500">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="font-bold text-slate-555 uppercase text-[9px] tracking-wider">Contact Phone</label>
+        <input type="tel" id="regPhone" required placeholder="e.g. 9123456789" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg text-xs font-bold outline-none focus:border-teal-500 font-mono">
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="font-bold text-slate-555 uppercase text-[9px] tracking-wider">Residential Address</label>
+        <input type="text" id="regAddress" required placeholder="e.g. Mall Road, Shimla" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg text-xs font-semibold outline-none focus:border-teal-500">
+      </div>
+
+      <!-- Submit triggers -->
+      <button type="submit" class="w-full mt-3 bg-teal-700 hover:bg-teal-800 text-white font-bold p-3 rounded-lg uppercase tracking-wider transition-colors cursor-pointer shadow-md">
+        Create Ingested Profile
+      </button>
+
+      <a href="patient.html" class="w-full text-slate-550 hover:text-slate-700 text-center font-bold uppercase text-[9px] tracking-wider mt-1 block">
+        Cancel and Login
+      </a>
+
+    </form>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+
+      const form = document.getElementById("signupForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("regName").value.trim();
+        const age = parseInt(document.getElementById("regAge").value, 10);
+        const gender = document.getElementById("regGender").value;
+        const phone = document.getElementById("regPhone").value.trim();
+        const address = document.getElementById("regAddress").value.trim();
+
+        const errorBanner = document.getElementById("errorBanner");
+        errorBanner.classList.add("hidden");
+
+        const patients = window.HMS_DB.getPatients() || [];
+
+        // Check duplicates
+        const exists = patients.some(p => p.name.toLowerCase() === name.toLowerCase());
+        if (exists) {
+          errorBanner.textContent = "Profile name already registered.";
+          errorBanner.classList.remove("hidden");
+          return;
+        }
+
+        const patientId = "PAT" + Math.floor(1000 + Math.random() * 9000);
+        const newPat = {
+          patient_id: patientId,
+          name,
+          age,
+          gender,
+          contact: phone,
+          address,
+          created_at: new Date().toISOString()
+        };
+
+        patients.push(newPat);
+        window.HMS_DB.savePatients(patients);
+
+        // Auto Login
+        window.HMS_DB.setSession("patient", "patient@voxai.com", name, patientId);
+
+        // Vocal alert
+        if (window.speechSynthesis) {
+          const speech = new SpeechSynthesisUtterance("Ingest profile created. Welcome to VoxAI health portal.");
+          window.speechSynthesis.speak(speech);
+        }
+
+        alert(`Successfully registered! Your patient ID is ${patientId}`);
+        window.location.href = "patient-dashboard.html";
+      });
+    });
+  </script>
+</body>
+</html>

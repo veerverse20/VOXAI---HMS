@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Portal - Secure Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left Column -->
+    <div class="login-left">
+      <div>
+        <h1 style="font-weight: 800; font-size: 38px; color: #005695; letter-spacing: 0; line-height: 1.1;">Staff Access</h1>
+        <h1 style="font-weight: 800; font-size: 38px; color: #005695; letter-spacing: 0; line-height: 1.1; margin-top: 4px;">VoxAI HMS</h1>
+        <p style="margin-top: 16px; font-weight: 500; font-size: 14px;">Front-desk command center for intake, queue flow, and scheduling.</p>
+      </div>
+
+      <div class="gear-icon-container">
+        <!-- SVG Gear Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+    </div>
+
+    <!-- Right Column (Form) -->
+    <div class="login-right">
+      <h2>Staff Login</h2>
+      
+      <!-- Visual Error Banner Container -->
+      <div id="errorContainer" style="display: none;"></div>
+
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <input type="email" id="email" placeholder="Admin Email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-admin">Access Staff Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="js/admin-login.js"></script>
+</body>
+</html>

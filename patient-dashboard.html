@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal - Dashboard</title>
+  <link rel="stylesheet" href="css/patient.css">
+  <!-- Load Lucide icons from CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50/50">
+
+  <div class="min-h-screen w-full flex bg-[#f0fdfa]/35 overflow-hidden">
+    
+    <!-- Left teal sidebar (Matches React app) -->
+    <aside class="w-64 bg-[#0f766e] flex flex-col justify-between text-white select-none shrink-0 min-h-screen">
+      <div>
+        <div class="p-6">
+          <h2 class="text-xl font-bold uppercase tracking-wider font-sans">VoxAI HMS</h2>
+        </div>
+
+        <nav class="mt-4 px-2 flex flex-col gap-1.5">
+          <button id="tabBtn-dashboard" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer bg-[#14b8a6]/40 text-white shadow-md">
+            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+            Dashboard
+          </button>
+
+          <a href="book.html" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            Appointments
+          </a>
+
+          <button id="tabBtn-labs" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            Lab & Reports
+          </button>
+
+          <button id="tabBtn-billing" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50">
+            <i data-lucide="receipt" class="w-4 h-4"></i>
+            Billing & Payments
+          </button>
+
+          <button id="tabBtn-help" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50">
+            <i data-lucide="help-circle" class="w-4 h-4"></i>
+            Help & Support
+          </button>
+
+          <button id="tabBtn-settings" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            Multilingual Settings
+          </button>
+        </nav>
+      </div>
+
+      <!-- Logout button -->
+      <div class="p-4 flex flex-col gap-2">
+        <button id="logoutBtn" class="w-full bg-[#ef4444] hover:bg-red-700 text-white rounded-lg p-2.5 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Right main content area -->
+    <div class="flex-1 bg-slate-50/50 p-6 flex flex-col overflow-y-auto">
+      
+      <!-- Header Welcome Bar -->
+      <div class="flex items-start justify-between border-b border-teal-100 pb-4 mb-6">
+        <div>
+          <h1 id="welcomeGreeting" class="text-2xl font-bold text-teal-900 font-sans tracking-tight">Hello, Rohan Das!</h1>
+          <div id="patientIdBadge" class="text-xs font-bold text-teal-650 uppercase tracking-widest mt-1">ID: PAT1204</div>
+        </div>
+        <div id="headerDate" class="text-right text-xs font-bold text-slate-500 uppercase font-sans pt-1">
+          Sunday, June 28, 2026
+        </div>
+      </div>
+
+      <!-- Subtab 1: Patient Dashboard Main View -->
+      <div id="tabContent-dashboard" class="flex flex-col gap-6">
+        
+        <!-- Top Action Row (4 Cards) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="book.html" class="bg-white hover:bg-teal-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center gap-2 cursor-pointer transition-colors">
+            <i data-lucide="calendar" class="w-8 h-8 text-teal-600"></i>
+            <span class="text-xs font-bold text-slate-800 leading-tight">Book New Appointment</span>
+          </a>
+
+          <button onclick="alert('Refill request submitted.')" class="bg-white hover:bg-teal-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center gap-2 cursor-pointer transition-colors">
+            <i data-lucide="pill" class="w-8 h-8 text-rose-500"></i>
+            <span class="text-xs font-bold text-slate-800 leading-tight">Request Refill</span>
+          </button>
+
+          <button onclick="alert('No outstanding balances for PAT1204.')" class="bg-white hover:bg-teal-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center gap-2 cursor-pointer transition-colors">
+            <i data-lucide="receipt" class="w-8 h-8 text-amber-500"></i>
+            <span class="text-xs font-bold text-slate-800 leading-tight">Pay Outstanding Bill</span>
+          </button>
+
+          <button onclick="switchTab('help')" class="bg-white hover:bg-teal-50 border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center gap-2 cursor-pointer transition-colors">
+            <i data-lucide="message-square" class="w-8 h-8 text-indigo-500"></i>
+            <span class="text-xs font-bold text-slate-800 leading-tight">Chat with Assistant</span>
+          </button>
+        </div>
+
+        <!-- Content Layout Columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Left Column: Appointments & Labs -->
+          <div class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- Active Appointment tracker -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+              <h3 class="font-bold text-teal-900 text-xs uppercase tracking-wider pb-2 border-b">Your Schedule & Status Tracker</h3>
+              <div id="appointmentsTracker" class="flex flex-col gap-3">
+                <!-- Loaded dynamically -->
+              </div>
+            </div>
+
+            <!-- Latest Lab Results -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+              <h3 class="font-bold text-teal-900 text-xs uppercase tracking-wider pb-2 border-b">Latest Lab Results</h3>
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-sans">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Result available from <strong>Thyroid Panel</strong></h4>
+                  <div class="text-xs text-slate-450 font-bold mt-0.5">Date Received: 09 Nov 2025</div>
+                </div>
+                <button onclick="alert('TSH: 2.1 mIU/L (Normal), Free T4: 1.2 ng/dL (Normal). Profile check resolved.')" class="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold text-xs uppercase px-3 py-1.5 rounded-lg tracking-wider transition-colors cursor-pointer">
+                  View Details
+                </button>
+              </div>
+            </div>
+
+            <!-- New Requirement: Read-Only Prescription History cards grid -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+              <h3 class="font-bold text-teal-900 text-xs uppercase tracking-wider pb-2 border-b">Prescription History Module</h3>
+              <div id="rxHistoryContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Chronological history cards dynamically rendered -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Medications schedule & Talk to VoxAI -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <!-- Medication Schedule -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+              <h3 class="font-bold text-teal-900 text-xs uppercase tracking-wider pb-2 border-b">Medication Schedule</h3>
+              <div class="flex flex-col gap-3 text-xs text-slate-700 font-semibold font-sans">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 font-bold">💊</div>
+                  <div>
+                    <h4 class="font-bold text-slate-800">Amlodipine 5mg</h4>
+                    <span class="text-[10px] text-slate-450 block font-bold">Once Daily</span>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-3 border-t pt-3">
+                  <div class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 font-bold">💊</div>
+                  <div>
+                    <h4 class="font-bold text-slate-800">Aspirin 81mg</h4>
+                    <span class="text-[10px] text-slate-450 block font-bold">Daily (Breakfast)</span>
+                  </div>
+                </div>
+
+                <button onclick="alert('Follow doctor directions. Consult cardiologist if symptoms persist.')" class="w-full mt-2 bg-teal-650 hover:bg-[#0f766e] text-white font-bold text-xs uppercase py-2 rounded-lg tracking-wider cursor-pointer transition-colors">
+                  View Full List & Instructions
+                </button>
+              </div>
+            </div>
+
+            <!-- Talk to VoxAI symptom checking widget -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+              <h3 class="font-bold text-teal-900 text-xs uppercase tracking-wider pb-2 border-b">Talk to VoxAI</h3>
+              <div class="flex flex-col gap-3 font-sans text-xs text-slate-600">
+                <p>Use the voice assistant for clinical checks:</p>
+                <ul class="flex flex-col gap-1 italic text-[11px] text-slate-500 font-medium">
+                  <li>- "Book a follow-up with Dr. Varma."</li>
+                  <li>- "Show my prescription history"</li>
+                  <li>- "Register new patient [Name]"</li>
+                </ul>
+                
+                <div class="flex gap-1.5 items-center mt-2">
+                  <input 
+                    type="text"
+                    id="symptomText"
+                    placeholder="Type symptoms or commands..."
+                    class="flex-1 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white outline-none focus:border-teal-500 font-semibold"
+                  />
+                  <!-- Link to voxmic popup -->
+                  <a href="voxmic.html" class="h-8 w-8 rounded-full border border-teal-200 bg-teal-50 hover:bg-teal-100 text-teal-700 flex items-center justify-center cursor-pointer transition-colors">
+                    <i data-lucide="mic" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+                
+                <button id="symptomSubmitBtn" class="w-full bg-[#0d9488] hover:bg-[#0f766e] text-white text-xs font-bold uppercase py-2 rounded-lg cursor-pointer transition-colors mt-1">
+                  Send Command
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Subtab 2: Lab Results -->
+      <div id="tabContent-labs" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 font-sans">
+        <h3 class="font-bold text-teal-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Lab Results Portal</h3>
+        <div class="bg-slate-50 p-4 border rounded-xl flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Thyroid Profile (TSH, Free T3, Free T4)</h4>
+            <span class="text-xs text-slate-455 block font-semibold mt-1">Status: Normal Range Verified</span>
+          </div>
+          <span class="text-xs font-bold text-slate-500 font-mono">09 Nov 2025</span>
+        </div>
+      </div>
+
+      <!-- Subtab 3: Billing -->
+      <div id="tabContent-billing" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 max-w-sm font-sans">
+        <h3 class="font-bold text-teal-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Outpatient Payments</h3>
+        <div class="bg-slate-50 p-4 border rounded-xl flex justify-between items-center">
+          <span class="font-bold text-slate-800">Balance Due:</span>
+          <span class="text-xl font-bold text-teal-750">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Subtab 4: Help & Support -->
+      <div id="tabContent-help" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 font-sans">
+        <h3 class="font-bold text-teal-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Helpdesk FAQs</h3>
+        <div class="p-3 bg-slate-50 rounded-lg text-xs leading-relaxed">
+          <span class="font-bold text-teal-700 block">Q: Can I schedule follow-ups?</span>
+          <span class="block mt-1">A: Yes, click the "Book New Appointment" tab on the patient dashboard menu.</span>
+        </div>
+      </div>
+
+      <!-- Subtab 5: Multilingual settings -->
+      <div id="tabContent-settings" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 font-sans text-xs">
+        <h3 class="font-bold text-teal-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Language Settings</h3>
+        <p class="text-slate-550 leading-relaxed uppercase">Locale layout: EN-US. Speech input parses clinical accent profiles correctly.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="voxai.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      // Require Patient authentication
+      const session = window.HMS_DB.requireAuth(["patient"]);
+
+      // Load name & ID
+      document.getElementById("welcomeGreeting").textContent = `Hello, ${session.name}!`;
+      document.getElementById("patientIdBadge").textContent = `ID: ${session.id}`;
+
+      // Update date
+      const dateHeader = document.getElementById("headerDate");
+      if (dateHeader) {
+        dateHeader.textContent = new Date().toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      }
+
+      // Register status mutation global helper
+      window.updateApptStatus = (apptId, nextStatus) => {
+        const appointments = window.HMS_DB.getAppointments() || [];
+        const appt = appointments.find(a => a.appointment_id === apptId);
+        if (appt) {
+          appt.status = nextStatus;
+          window.HMS_DB.saveAppointments(appointments);
+
+          if (window.speechSynthesis) {
+            let vocalMsg = "Pre-check in completed.";
+            if (nextStatus === "In Progress") vocalMsg = "Consultation session has started.";
+            else if (nextStatus === "Completed") vocalMsg = "Consultation session completed.";
+            const speech = new SpeechSynthesisUtterance(vocalMsg);
+            window.speechSynthesis.speak(speech);
+          }
+          renderTracker();
+        }
+      };
+
+      // Render appointments & statuses
+      const renderTracker = () => {
+        const tracker = document.getElementById("appointmentsTracker");
+        tracker.innerHTML = "";
+        const appointments = window.HMS_DB.getAppointments() || [];
+        const myAppts = appointments.filter(a => a.patient_id === session.id);
+
+        if (myAppts.length === 0) {
+          tracker.innerHTML = `<div class="text-slate-400 py-6 text-xs italic">No active appointments scheduled.</div>`;
+          return;
+        }
+
+        myAppts.forEach(a => {
+          const div = document.createElement("div");
+          div.className = "bg-[#f0fdfa] border border-[#ccfbf1] p-4 rounded-xl flex flex-col gap-3.5 text-xs shadow-sm";
+          
+          let badgeClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+          if (a.status === "In Progress") {
+            badgeClass = "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 animate-pulse";
+          } else if (a.status === "Completed") {
+            badgeClass = "bg-sky-500/10 text-sky-400 border border-sky-500/20";
+          }
+
+          div.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="text-sm font-bold text-teal-850">Dr. ${a.doctor_name}</h4>
+                <span class="text-[10px] text-teal-650 block font-bold mt-0.5">${a.doctor_specialty}</span>
+                <p class="text-[11px] text-slate-500 mt-1.5 font-medium">Reason: ${a.reason}</p>
+              </div>
+              <div style="text-align: right;">
+                <span class="font-bold text-teal-800 block font-mono">${a.date}</span>
+                <span class="text-slate-550 block mt-0.5 font-semibold">${a.time_slot}</span>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-3xs font-bold uppercase tracking-wider ${badgeClass} mt-2">
+                  ${a.status}
+                </span>
+              </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 border-t border-teal-100/50 pt-3">
+              <button onclick="updateApptStatus(${a.appointment_id}, 'CONFIRMED')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase transition-all cursor-pointer shadow-sm">Pre-Check-in</button>
+              <button onclick="updateApptStatus(${a.appointment_id}, 'In Progress')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase transition-all cursor-pointer shadow-sm">In Progress</button>
+              <button onclick="updateApptStatus(${a.appointment_id}, 'Completed')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase transition-all cursor-pointer shadow-sm">Done</button>
+            </div>
+          `;
+          tracker.appendChild(div);
+        });
+      };
+
+      // Render Chronological Prescription History Cards (Read-only for self)
+      const renderPrescriptions = () => {
+        const container = document.getElementById("rxHistoryContainer");
+        container.innerHTML = "";
+
+        const prescriptions = window.HMS_DB.getPrescriptions() || [];
+        const myRx = prescriptions.filter(p => p.patient_name.toLowerCase().includes(session.name.toLowerCase()));
+
+        if (myRx.length === 0) {
+          container.innerHTML = `<div class="col-span-2 text-slate-400 py-6 text-xs italic">No prescription records found in history.</div>`;
+          return;
+        }
+
+        myRx.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "bg-white border border-slate-200 rounded-xl p-4.5 shadow-sm border-l-4 border-l-teal-500 flex flex-col gap-2";
+          card.innerHTML = `
+            <div class="flex justify-between items-center border-b border-dashed border-slate-100 pb-2">
+              <span class="font-mono font-bold text-teal-800">${p.prescription_id}</span>
+              <span class="text-[11px] font-semibold text-slate-400 font-mono">${p.date}</span>
+            </div>
+            <div class="text-xs flex flex-col gap-1">
+              <div><strong class="color-slate-600">Doctor:</strong> Dr. ${p.doctor_name}</div>
+              <div><strong class="color-slate-600">Diagnosis:</strong> ${p.diagnosis}</div>
+            </div>
+            <div class="bg-[#f0fdfa] border border-[#ccfbf1] rounded-lg p-2.5 text-xs text-teal-850 font-semibold font-mono mt-1">
+              <span class="text-[10px] text-teal-700 font-bold block uppercase mb-1">Medications:</span>
+              <div style="white-space: pre-wrap;">${p.medications}</div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      };
+
+      // Tabbing
+      const switchTab = (tabName) => {
+        const tabs = ["dashboard", "labs", "billing", "help", "settings"];
+        tabs.forEach(t => {
+          const content = document.getElementById(`tabContent-${t}`);
+          const btn = document.getElementById(`tabBtn-${t}`);
+          if (content) {
+            if (t === tabName) {
+              content.classList.remove("hidden");
+            } else {
+              content.classList.add("hidden");
+            }
+          }
+          if (btn) {
+            if (t === tabName) {
+              btn.className = "w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer bg-[#14b8a6]/40 text-white shadow-md";
+            } else {
+              btn.className = "w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#0d9488] text-teal-50";
+            }
+          }
+        });
+      };
+
+      ["dashboard", "labs", "billing", "help", "settings"].forEach(t => {
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (btn) {
+          btn.addEventListener("click", () => switchTab(t));
+        }
+      });
+
+      // Submit typed symptom/commands
+      const symptomInput = document.getElementById("symptomText");
+      const symptomBtn = document.getElementById("symptomSubmitBtn");
+      if (symptomBtn) {
+        symptomBtn.addEventListener("click", () => {
+          const text = symptomInput.value.trim();
+          if (!text) return;
+          
+          // Trigger local parsing via dummy or Speech API
+          // Let's create a local voiceLog or process directly
+          if (text.toLowerCase().includes("prescription")) {
+            switchTab("dashboard");
+            alert("Prescription history view toggled.");
+          } else {
+            alert(`Symptom profile ingested: "${text}". Checked by coordinator AI.`);
+          }
+          symptomInput.value = "";
+        });
+      }
+
+      // Initial renders
+      renderTracker();
+      renderPrescriptions();
+
+      // Listen for local storage changes across tabs
+      window.addEventListener("storage", () => {
+        renderTracker();
+        renderPrescriptions();
+      });
+
+      window.onDatabaseChange = () => {
+        renderTracker();
+        renderPrescriptions();
+      };
+
+      // Logout
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        window.HMS_DB.clearSession();
+        window.location.href = "index.html";
+      });
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

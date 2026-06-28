@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Dashboard</title>
+  <link rel="stylesheet" href="css/admin-dash.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50/50">
+
+  <div class="min-h-screen w-full flex bg-[#f0f9ff]/45 overflow-hidden">
+    
+    <!-- Left purple sidebar (Matches React app) -->
+    <aside class="w-64 bg-[#4c1d95] flex flex-col justify-between text-white select-none shrink-0 min-h-screen">
+      <div>
+        <div class="p-6">
+          <h2 class="text-xl font-bold uppercase tracking-wider font-sans">VoxAI HMS</h2>
+          <span class="text-[10px] text-purple-200 font-bold uppercase tracking-widest block mt-1">Admin Panel</span>
+        </div>
+
+        <nav class="mt-4 px-2 flex flex-col gap-1.5">
+          <button id="tabBtn-command" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer bg-[#8b5cf6]/40 text-white shadow-md">
+            <i data-lucide="mic" class="w-4 h-4"></i>
+            Command Center
+          </button>
+
+          <button id="tabBtn-queue" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#6b21a8] text-purple-50">
+            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+            Today's Queue
+          </button>
+
+          <button id="tabBtn-scheduling" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#6b21a8] text-purple-50">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            Scheduling
+          </button>
+
+          <button id="tabBtn-contact" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#6b21a8] text-purple-50">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            Contact Center
+          </button>
+
+          <button id="tabBtn-settings" class="w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#6b21a8] text-purple-50">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+            My Settings
+          </button>
+        </nav>
+      </div>
+
+      <!-- Clock widget and logout -->
+      <div class="p-4 flex flex-col gap-3.5 border-t border-purple-500/30 bg-purple-950/40">
+        <div class="font-mono text-left">
+          <div id="liveClock" class="text-sm font-bold tracking-wider">12:00:00 PM</div>
+          <div id="liveDate" class="text-[10px] text-purple-250 font-bold mt-0.5 uppercase tracking-widest">28-06-2026</div>
+        </div>
+
+        <button id="logoutBtn" class="w-full bg-[#ef4444] hover:bg-red-700 text-white rounded-lg p-2.5 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Right Content area -->
+    <div class="flex-1 bg-[#f0f9ff]/45 p-6 flex flex-col overflow-y-auto">
+      
+      <!-- Header Welcome Bar -->
+      <div class="flex items-start justify-between border-b border-purple-100 pb-4 mb-6">
+        <div>
+          <h1 id="welcomeGreeting" class="text-2xl font-bold text-purple-900 font-sans tracking-tight">Hello, Admin!</h1>
+          <div class="text-xs font-bold text-purple-650 uppercase tracking-widest mt-1">ID: ADM001</div>
+        </div>
+        <div id="headerDate" class="text-right text-xs font-bold text-slate-500 uppercase font-sans pt-1">
+          Sunday, June 28, 2026
+        </div>
+      </div>
+
+      <!-- Stats Grid (Visible on dashboard pages) -->
+      <div id="statsCounters" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center gap-4">
+          <div class="p-3 bg-purple-50 text-purple-650 rounded-xl text-lg font-bold">📅</div>
+          <div>
+            <h3 id="statTotalAppts" class="text-xl font-bold text-slate-800 leading-none">1</h3>
+            <p class="text-[10px] text-slate-450 uppercase font-bold tracking-wide mt-1">Total Bookings</p>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center gap-4">
+          <div class="p-3 bg-yellow-50 text-yellow-650 rounded-xl text-lg font-bold">⚡</div>
+          <div>
+            <h3 id="statInProgress" class="text-xl font-bold text-slate-800 leading-none">0</h3>
+            <p class="text-[10px] text-slate-450 uppercase font-bold tracking-wide mt-1">In Progress</p>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center gap-4">
+          <div class="p-3 bg-sky-50 text-sky-605 rounded-xl text-lg font-bold">✅</div>
+          <div>
+            <h3 id="statCompleted" class="text-xl font-bold text-slate-800 leading-none">0</h3>
+            <p class="text-[10px] text-slate-455 uppercase font-bold tracking-wide mt-1">Completed</p>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center gap-4">
+          <div class="p-3 bg-teal-50 text-teal-650 rounded-xl text-lg font-bold">👥</div>
+          <div>
+            <h3 id="statTotalPatients" class="text-xl font-bold text-slate-800 leading-none">2</h3>
+            <p class="text-[10px] text-slate-450 uppercase font-bold tracking-wide mt-1">Registered Patients</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab 1: Command Center View -->
+      <div id="tabContent-command" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Audio intake console card -->
+        <div class="lg:col-span-8 bg-[#0284c7] rounded-2xl shadow-lg border border-sky-600/35 p-6 text-white flex flex-col justify-between min-h-[420px]">
+          <div class="flex items-center justify-between pb-3 border-b border-sky-400/45">
+            <h3 class="font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+              <span>🎙</span> VOXAI: HANDS-FREE WORKFLOW
+            </h3>
+            <span class="bg-[#0ea5e9]/40 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">TTS ACTIVE</span>
+          </div>
+
+          <textarea id="voiceCommandText" readonly class="w-full flex-grow bg-sky-950/45 rounded-xl border border-sky-400/30 p-4 shadow-inner text-sm leading-relaxed text-sky-100 placeholder-sky-200/50 italic font-medium my-5 outline-none resize-none" placeholder="Your spoken commands will print here. Open the live mic assistant to dictation..."></textarea>
+
+          <div class="flex flex-col items-center gap-2">
+            <!-- Launches voxmic popup -->
+            <a href="voxmic.html" class="h-16 w-16 rounded-full bg-rose-400 border border-rose-300 text-white hover:bg-rose-500 shadow-xl flex items-center justify-center cursor-pointer transition-transform active:scale-95">
+              <i data-lucide="mic" class="w-6 h-6"></i>
+            </a>
+            <span class="text-xs font-bold tracking-wider block">Open Voice Command Intake</span>
+          </div>
+        </div>
+
+        <!-- Right: Verification preview and small queue tracker -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+          <!-- Verifier preview -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <h3 class="font-bold text-purple-900 text-xs uppercase tracking-wider pb-2 border-b">verifier intake profile</h3>
+            <div id="verifierBanner" class="hidden bg-green-50 text-green-700 p-2 rounded text-xs font-bold"></div>
+            
+            <div class="flex flex-col gap-2.5 text-xs text-slate-800">
+              <div><strong>Patient Name:</strong> <span id="vPatient" class="text-slate-400 font-bold italic">N/A</span></div>
+              <div><strong>Clinician:</strong> <span id="vPhysician" class="text-slate-400 font-bold italic">N/A</span></div>
+              <div><strong>Ingested Notes:</strong> <span id="vSymptom" class="text-slate-400 font-bold italic">N/A</span></div>
+            </div>
+          </div>
+
+          <!-- Small queue monitor -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 flex flex-col gap-4">
+            <h3 class="font-bold text-purple-900 text-xs uppercase tracking-wider pb-2 border-b">Active Schedule Monitor</h3>
+            <div id="shortQueue" class="flex flex-col gap-2.5 max-h-[160px] overflow-y-auto pr-1">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Subtab 2: Today's Queue (Live Queue monitor card) -->
+      <div id="tabContent-queue" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6">
+        <h3 class="font-bold text-purple-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Active Schedule Queue</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs bg-slate-50 border rounded-xl overflow-hidden">
+            <thead>
+              <tr class="bg-slate-100 text-slate-500 font-bold uppercase tracking-wider">
+                <th class="py-3 px-4">Patient ID</th>
+                <th class="py-3 px-4">Patient Name</th>
+                <th class="py-3 px-4">Assigned Doctor</th>
+                <th class="py-3 px-4">Time Slot</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="fullQueueBody" class="divide-y divide-slate-200">
+              <!-- Dynamically loaded -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subtab 3: Scheduling (Forms for manual intakes) -->
+      <div id="tabContent-scheduling" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Registration Form -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-6">
+          <h3 class="font-bold text-purple-900 text-xs uppercase tracking-wider pb-2 border-b mb-4">Register Profile</h3>
+          <form id="adminRegForm" class="flex flex-col gap-3 text-xs">
+            <input type="text" id="regName" placeholder="Patient Name" required class="border p-2.5 rounded-lg w-full">
+            <input type="number" id="regAge" placeholder="Age" required class="border p-2.5 rounded-lg w-full">
+            <select id="regGender" class="border p-2.5 rounded-lg w-full font-bold">
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="O">Other</option>
+            </select>
+            <input type="tel" id="regContact" placeholder="Contact Phone" required class="border p-2.5 rounded-lg w-full">
+            <input type="text" id="regAddress" placeholder="Address" required class="border p-2.5 rounded-lg w-full">
+            
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold p-3 rounded-lg uppercase cursor-pointer">Register Profile</button>
+          </form>
+        </div>
+
+        <!-- Slot booking Form -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-6">
+          <h3 class="font-bold text-purple-900 text-xs uppercase tracking-wider pb-2 border-b mb-4">Schedule Slot</h3>
+          <form id="adminBookForm" class="flex flex-col gap-3 text-xs">
+            <select id="bookPatientSelect" required class="border p-2.5 rounded-lg w-full font-bold">
+              <!-- Dynamically populated -->
+            </select>
+            
+            <select id="bookDoctorSelect" required class="border p-2.5 rounded-lg w-full font-bold">
+              <!-- Dynamically populated -->
+            </select>
+            
+            <input type="date" id="bookDate" required class="border p-2.5 rounded-lg w-full font-mono font-bold">
+            
+            <select id="bookTimeSelect" required class="border p-2.5 rounded-lg w-full font-mono font-bold">
+              <option value="09:00 AM">09:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:30 AM">11:30 AM</option>
+              <option value="01:30 PM">01:30 PM</option>
+              <option value="03:00 PM">03:00 PM</option>
+            </select>
+
+            <textarea id="bookReason" placeholder="Clinical complaints reason..." rows="2" class="border p-2.5 rounded-lg w-full resize-none"></textarea>
+
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold p-3 rounded-lg uppercase cursor-pointer">Schedule Slot</button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Subtab 4: Contact Center (Clinical NLU queries assistant) -->
+      <div id="tabContent-contact" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 max-w-xl mx-auto w-full font-sans">
+        <h3 class="font-bold text-purple-900 text-sm uppercase tracking-wider mb-4 pb-2 border-b">Clinical FAQ Assistant</h3>
+        <div class="flex gap-2">
+          <input type="text" id="faqInput" placeholder="Enter patient complaints or hours inquiries..." class="flex-grow border p-2.5 text-xs rounded-lg font-semibold outline-none focus:border-purple-500">
+          <button id="faqSubmitBtn" class="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-bold px-5 py-2.5 text-xs rounded-lg uppercase cursor-pointer transition-colors shadow-sm">Submit</button>
+        </div>
+        
+        <div id="faqResponseBox" class="hidden bg-purple-50 border border-purple-100 p-4 rounded-xl text-xs mt-4">
+          <span class="text-[10px] font-bold text-purple-750 block uppercase font-mono mb-1">NLU Response:</span>
+          <p id="faqResponseText" class="italic text-slate-700 font-semibold"></p>
+        </div>
+      </div>
+
+      <!-- Subtab 5: Settings & Code Explorer -->
+      <div id="tabContent-settings" class="hidden flex flex-col gap-6">
+        <!-- Database Inspector Grid -->
+        <div id="dbGridContainer"></div>
+      </div>
+
+      <!-- New Requirement: Master Facility Prescription History Log Grid -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-5 mt-6 flex flex-col gap-4">
+        <h3 class="font-bold text-purple-900 text-xs uppercase tracking-wider pb-2 border-b">Master Facility Prescriptions Log (Read-Only)</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs bg-slate-50 border rounded-xl overflow-hidden">
+            <thead>
+              <tr class="bg-slate-100 text-slate-500 font-bold uppercase tracking-wider">
+                <th class="py-3 px-4">Rx ID</th>
+                <th class="py-3 px-4">Patient Name</th>
+                <th class="py-3 px-4">Diagnosis</th>
+                <th class="py-3 px-4">Medications</th>
+                <th class="py-3 px-4">Prescribed By</th>
+                <th class="py-3 px-4">Date</th>
+              </tr>
+            </thead>
+            <tbody id="masterRxBody" class="divide-y divide-slate-200">
+              <!-- Dynamically loaded -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      // Require Admin authentication
+      const session = window.HMS_DB.requireAuth(["admin"]);
+
+      // Set greeting
+      document.getElementById("welcomeGreeting").textContent = `Hello, ${session.name}!`;
+
+      // Live clocks
+      const updateClocks = () => {
+        const d = new Date();
+        document.getElementById("liveClock").textContent = d.toLocaleTimeString();
+        document.getElementById("liveDate").textContent = d.toLocaleDateString("en-GB").replace(/\//g, "-");
+      };
+      setInterval(updateClocks, 1000);
+      updateClocks();
+
+      // Renders the stats, queues, forms, lists, etc.
+      const renderDashboard = () => {
+        const patients = window.HMS_DB.getPatients() || [];
+        const appointments = window.HMS_DB.getAppointments() || [];
+        const prescriptions = window.HMS_DB.getPrescriptions() || [];
+
+        // 1. Stats Counter values
+        document.getElementById("statTotalPatients").textContent = patients.length;
+        document.getElementById("statTotalAppts").textContent = appointments.length;
+        document.getElementById("statInProgress").textContent = appointments.filter(a => a.status === "In Progress").length;
+        document.getElementById("statCompleted").textContent = appointments.filter(a => a.status === "Completed").length;
+
+        // 2. Command queue (small queue)
+        const shortQueue = document.getElementById("shortQueue");
+        shortQueue.innerHTML = "";
+        if (appointments.length === 0) {
+          shortQueue.innerHTML = `<div class="text-slate-400 py-3 text-xs italic">No scheduled consultations today.</div>`;
+        } else {
+          appointments.slice(0, 4).forEach(a => {
+            const div = document.createElement("div");
+            div.className = "bg-purple-50/60 border border-purple-100 p-2.5 rounded-xl flex justify-between items-center text-xs";
+            
+            let badgeClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            if (a.status === "In Progress") badgeClass = "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 animate-pulse";
+            else if (a.status === "Completed") badgeClass = "bg-sky-500/10 text-sky-400 border border-sky-500/20";
+
+            div.innerHTML = `
+              <div>
+                <strong class="color-purple-900">${a.patient_name}</strong>
+                <div class="text-[10px] text-slate-500">Dr. ${a.doctor_name}</div>
+              </div>
+              <span class="badge ${badgeClass} text-[9px] py-0.5 px-2 rounded-full uppercase font-bold">${a.status}</span>
+            `;
+            shortQueue.appendChild(div);
+          });
+        }
+
+        // 3. Queue monitor tab (full queue)
+        const fullQueue = document.getElementById("fullQueueBody");
+        fullQueue.innerHTML = "";
+        if (appointments.length === 0) {
+          fullQueue.innerHTML = `<tr><td colspan="5" class="py-10 text-center text-slate-450 italic">No scheduled consultations in database.</td></tr>`;
+        } else {
+          appointments.forEach(a => {
+            const tr = document.createElement("tr");
+            let badgeClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            if (a.status === "In Progress") badgeClass = "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 animate-pulse";
+            else if (a.status === "Completed") badgeClass = "bg-sky-500/10 text-sky-400 border border-sky-500/20";
+
+            tr.innerHTML = `
+              <td class="py-3 px-4 font-mono font-bold text-purple-750">${a.patient_id}</td>
+              <td class="py-3 px-4 font-semibold text-slate-800">${a.patient_name}</td>
+              <td class="py-3 px-4 font-semibold text-slate-600">Dr. ${a.doctor_name} <span class="text-3xs block font-bold text-slate-400">${a.doctor_specialty}</span></td>
+              <td class="py-3 px-4 font-mono">${a.time_slot}</td>
+              <td class="py-3 px-4"><span class="badge ${badgeClass} text-[9px] py-0.5 px-2.5 rounded-full font-bold uppercase">${a.status}</span></td>
+            `;
+            fullQueue.appendChild(tr);
+          });
+        }
+
+        // 4. Populate Patient Select dropdown inside schedule subtab
+        const pSelect = document.getElementById("bookPatientSelect");
+        pSelect.innerHTML = "<option value=''>Choose Patient...</option>";
+        patients.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.patient_id;
+          opt.textContent = `${p.name} (${p.patient_id})`;
+          pSelect.appendChild(opt);
+        });
+
+        // 5. Populate Doctor Select dropdown inside schedule subtab
+        const dSelect = document.getElementById("bookDoctorSelect");
+        dSelect.innerHTML = "<option value=''>Choose Clinician...</option>";
+        const doctors = window.HMS_DB.getDoctors() || [];
+        doctors.forEach(d => {
+          const opt = document.createElement("option");
+          opt.value = d.doctor_id;
+          opt.textContent = `Dr. ${d.name} (${d.specialty})`;
+          dSelect.appendChild(opt);
+        });
+
+        // 6. Master Prescriptions log
+        const masterRx = document.getElementById("masterRxBody");
+        masterRx.innerHTML = "";
+        if (prescriptions.length === 0) {
+          masterRx.innerHTML = `<tr><td colspan="6" class="py-10 text-center text-slate-450 italic">No prescriptions issued in this facility.</td></tr>`;
+        } else {
+          prescriptions.forEach(p => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td class="py-3 px-4 font-mono font-bold text-purple-750">${p.prescription_id}</td>
+              <td class="py-3 px-4 font-semibold text-slate-800">${p.patient_name}</td>
+              <td class="py-3 px-4">${p.diagnosis}</td>
+              <td class="py-3 px-4 font-mono font-semibold text-purple-900">${p.medications}</td>
+              <td class="py-3 px-4 font-semibold text-slate-650">${p.doctor_name}</td>
+              <td class="py-3 px-4 font-mono">${p.date}</td>
+            `;
+            masterRx.appendChild(tr);
+          });
+        }
+      };
+
+      // Tabbing
+      const switchTab = (tabName) => {
+        const tabs = ["command", "queue", "scheduling", "contact", "settings"];
+        tabs.forEach(t => {
+          const content = document.getElementById(`tabContent-${t}`);
+          const btn = document.getElementById(`tabBtn-${t}`);
+          if (content) {
+            if (t === tabName) {
+              content.classList.remove("hidden");
+            } else {
+              content.className += " hidden";
+            }
+          }
+          if (btn) {
+            if (t === tabName) {
+              btn.className = "w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer bg-[#8b5cf6]/40 text-white shadow-md";
+            } else {
+              btn.className = "w-full text-left px-4 py-3 rounded-lg text-xs font-bold font-sans flex items-center gap-3 transition-all cursor-pointer hover:bg-[#6b21a8] text-purple-50";
+            }
+          }
+        });
+      };
+
+      ["command", "queue", "scheduling", "contact", "settings"].forEach(t => {
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (btn) {
+          btn.addEventListener("click", () => switchTab(t));
+        }
+      });
+
+      // Handle profile registration submit
+      const regForm = document.getElementById("adminRegForm");
+      if (regForm) {
+        regForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("regName").value.trim();
+          const age = parseInt(document.getElementById("regAge").value, 10);
+          const gender = document.getElementById("regGender").value;
+          const contact = document.getElementById("regContact").value.trim();
+          const address = document.getElementById("regAddress").value.trim();
+
+          const randomId = "PAT" + Math.floor(1000 + Math.random() * 9000);
+          const newPatient = {
+            patient_id: randomId,
+            name,
+            age,
+            gender,
+            contact,
+            address,
+            created_at: new Date().toISOString()
+          };
+
+          const list = window.HMS_DB.getPatients() || [];
+          list.push(newPatient);
+          window.HMS_DB.savePatients(list);
+
+          alert(`Successfully registered patient ${name} (ID: ${randomId}).`);
+          regForm.reset();
+          renderDashboard();
+          renderSettingsDB();
+        });
+      }
+
+      // Handle clinical schedule submit
+      const bookForm = document.getElementById("adminBookForm");
+      if (bookForm) {
+        bookForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const patientId = document.getElementById("bookPatientSelect").value;
+          const doctorId = document.getElementById("bookDoctorSelect").value;
+          const date = document.getElementById("bookDate").value;
+          const time_slot = document.getElementById("bookTimeSelect").value;
+          const reason = document.getElementById("bookReason").value.trim();
+
+          const patients = window.HMS_DB.getPatients() || [];
+          const doctors = window.HMS_DB.getDoctors() || [];
+          const appointments = window.HMS_DB.getAppointments() || [];
+
+          const pat = patients.find(p => p.patient_id === patientId);
+          const doc = doctors.find(d => d.doctor_id === doctorId);
+
+          const nextId = appointments.length > 0 ? Math.max(...appointments.map(a => a.appointment_id)) + 1 : 1;
+          const newAppt = {
+            appointment_id: nextId,
+            patient_id: patientId,
+            patient_name: pat ? pat.name : "Guest",
+            doctor_id: doctorId,
+            doctor_name: doc ? doc.name : "Physician",
+            doctor_specialty: doc ? doc.specialty : "General",
+            date,
+            time_slot,
+            reason: reason || "Scheduled consult",
+            status: "CONFIRMED",
+            created_at: new Date().toISOString()
+          };
+
+          appointments.unshift(newAppt);
+          window.HMS_DB.saveAppointments(appointments);
+
+          alert(`Appointment scheduled successfully! Assigned ID: #${nextId}`);
+          bookForm.reset();
+          renderDashboard();
+          renderSettingsDB();
+        });
+      }
+
+      // Live FAQs checker NLU queries
+      const faqInput = document.getElementById("faqInput");
+      const faqSubmit = document.getElementById("faqSubmitBtn");
+      const faqBox = document.getElementById("faqResponseBox");
+      const faqText = document.getElementById("faqResponseText");
+
+      if (faqSubmit) {
+        faqSubmit.addEventListener("click", () => {
+          const txt = faqInput.value.trim().toLowerCase();
+          if (!txt) return;
+
+          let responseText = "Our outpatient clinic schedules operate from 9:00 AM to 7:00 PM Outpatient timings. Emergency intake center is open 24 hours.";
+          if (txt.includes("locate") || txt.includes("where") || txt.includes("floor")) {
+            responseText = "General cardiology clinics are situated on the 3rd floor, wing B. Pediatric check-in handles rooms on 1st Floor.";
+          } else if (txt.includes("symptom") || txt.includes("cough") || txt.includes("fever")) {
+            responseText = "If experiencing symptoms such as moderate fever, book general consultation scheduler, rest, and keep hydrated.";
+          }
+
+          faqText.textContent = responseText;
+          faqBox.classList.remove("hidden");
+          
+          if (window.speechSynthesis) {
+            const speech = new SpeechSynthesisUtterance(responseText);
+            window.speechSynthesis.speak(speech);
+          }
+        });
+      }
+
+      // Check if we just completed a command and have parameters in storage to show
+      const checkVerifications = () => {
+        const lastAction = localStorage.getItem("voxai_last_action");
+        if (lastAction) {
+          const action = JSON.parse(lastAction);
+          document.getElementById("vPatient").textContent = action.patient_name || "N/A";
+          document.getElementById("vPhysician").textContent = action.doctor_name || "N/A";
+          document.getElementById("vSymptom").textContent = action.reason || "General Consultation Ingested";
+          
+          const banner = document.getElementById("verifierBanner");
+          banner.textContent = action.message || "Completed action verified!";
+          banner.classList.remove("hidden");
+
+          const textCommand = document.getElementById("voiceCommandText");
+          textCommand.value = `Verified intent: ${action.intent}\nRaw input: "${action.raw}"\nAction: ${action.message}`;
+          
+          localStorage.removeItem("voxai_last_action");
+          setTimeout(() => { banner.classList.add("hidden"); }, 5000);
+        }
+      };
+
+      // Settings subtab database grid table switcher
+      let activeLedgerTable = "patient";
+      const renderSettingsDB = () => {
+        const gridDiv = document.getElementById("dbGridContainer");
+        if (!gridDiv) return;
+
+        const patients = window.HMS_DB.getPatients() || [];
+        const appointments = window.HMS_DB.getAppointments() || [];
+        const attendance = window.HMS_DB.getAttendance() || [];
+        const voiceLogs = window.HMS_DB.getVoiceLogs() || [];
+
+        let rowsHTML = "";
+        if (activeLedgerTable === "patient") {
+          rowsHTML = `
+            <table class="w-full text-left text-xs bg-slate-950/40 rounded-xl border border-slate-800 overflow-hidden font-sans">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 font-mono bg-slate-950/60 uppercase text-3xs tracking-wider">
+                  <th class="py-3 px-4">patient_id</th>
+                  <th class="py-3 px-4">name</th>
+                  <th class="py-3 px-4">age</th>
+                  <th class="py-3 px-4">gender</th>
+                  <th class="py-3 px-4">contact</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-350 font-sans">
+                ${patients.map(p => `
+                  <tr>
+                    <td class="py-3 px-4 font-mono font-bold text-indigo-400">${p.patient_id}</td>
+                    <td class="py-3 px-4 font-bold text-white">${p.name}</td>
+                    <td class="py-3 px-4">${p.age}</td>
+                    <td class="py-3 px-4">${p.gender}</td>
+                    <td class="py-3 px-4 font-mono">${p.contact}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else if (activeLedgerTable === "appointment") {
+          rowsHTML = `
+            <table class="w-full text-left text-xs bg-slate-950/40 rounded-xl border border-slate-800 overflow-hidden font-sans">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 font-mono bg-slate-950/60 uppercase text-3xs tracking-wider">
+                  <th class="py-3 px-4">appt_id</th>
+                  <th class="py-3 px-4">patient_name</th>
+                  <th class="py-3 px-4">doctor_name</th>
+                  <th class="py-3 px-4">date</th>
+                  <th class="py-3 px-4">status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-300">
+                ${appointments.map(a => `
+                  <tr>
+                    <td class="py-3 px-4 font-mono">#${a.appointment_id}</td>
+                    <td class="py-3 px-4 font-bold text-white">${a.patient_name}</td>
+                    <td class="py-3 px-4">Dr. ${a.doctor_name}</td>
+                    <td class="py-3 px-4 font-mono">${a.date}</td>
+                    <td class="py-3 px-4 font-bold uppercase text-indigo-400">${a.status}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else {
+          rowsHTML = `
+            <div class="p-6 text-center text-slate-550 font-mono italic">Choose patient or appointment parameters above.</div>
+          `;
+        }
+
+        gridDiv.innerHTML = `
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-full font-sans text-slate-200">
+            <div class="bg-slate-950/60 px-5 py-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="database" class="h-5 w-5 text-indigo-400"></i>
+                <div>
+                  <h3 class="font-semibold text-white text-sm tracking-wide uppercase">Active Relational Ledger State</h3>
+                  <p class="text-[10px] text-slate-500 font-mono tracking-wider uppercase">Live Database LocalStorage Inspector</p>
+                </div>
+              </div>
+              <button id="resetLedgerBtn" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-lg transition-all cursor-pointer">
+                Reset DB Ledger
+              </button>
+            </div>
+            
+            <div class="flex border-b border-slate-800 bg-slate-950/30">
+              <button id="tblTab-patient" class="flex items-center gap-2 px-5 py-3 text-xs font-semibold border-b-2 uppercase tracking-wider ${activeLedgerTable === "patient" ? "border-indigo-500 text-indigo-400" : "border-transparent text-slate-500"}">
+                Patients (${patients.length})
+              </button>
+              <button id="tblTab-appointment" class="flex items-center gap-2 px-5 py-3 text-xs font-semibold border-b-2 uppercase tracking-wider ${activeLedgerTable === "appointment" ? "border-indigo-500 text-indigo-400" : "border-transparent text-slate-500"}">
+                Appointments (${appointments.length})
+              </button>
+            </div>
+
+            <div class="p-5 bg-slate-900/40">
+              ${rowsHTML}
+            </div>
+          </div>
+        `;
+
+        document.getElementById("resetLedgerBtn").addEventListener("click", () => {
+          window.HMS_DB.resetDB();
+          alert("Database tables reset successfully.");
+          renderDashboard();
+          renderSettingsDB();
+        });
+
+        document.getElementById("tblTab-patient").addEventListener("click", () => {
+          activeLedgerTable = "patient";
+          renderSettingsDB();
+        });
+
+        document.getElementById("tblTab-appointment").addEventListener("click", () => {
+          activeLedgerTable = "appointment";
+          renderSettingsDB();
+        });
+
+        lucide.createIcons();
+      };
+
+      // Dynamic hooks
+      window.onDatabaseChange = () => {
+        renderDashboard();
+        checkVerifications();
+        renderSettingsDB();
+      };
+
+      // Initial loaders
+      renderDashboard();
+      checkVerifications();
+      renderSettingsDB();
+
+      // Listen storage changes
+      window.addEventListener("storage", () => {
+        renderDashboard();
+        checkVerifications();
+        renderSettingsDB();
+      });
+
+      // Logout handler
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        window.HMS_DB.clearSession();
+        window.location.href = "index.html";
+      });
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

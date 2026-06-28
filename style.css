@@ -1,0 +1,35 @@
+/* VOXAI-HMS Stylesheet importing Tailwind CSS */
+@import "tailwindcss";
+
+/* Custom utility styles */
+@keyframes pulse-mic {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-mic-active {
+  animation: pulse-mic 1.5s infinite !important;
+  background-color: #ef4444 !important;
+}
+
+/* Custom error banner styling */
+.error-banner {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

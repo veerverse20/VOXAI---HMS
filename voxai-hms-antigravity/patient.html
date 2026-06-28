@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal - Secure Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/patient.css">
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left Column -->
+    <div class="login-left">
+      <div>
+        <h1 style="font-size: 38px; color: #115e59; font-weight: 800; letter-spacing: 0;">Welcome to</h1>
+        <h1 style="font-size: 38px; color: #115e59; font-weight: 800; letter-spacing: 0; margin-top: -4px;">Your</h1>
+        <h1 style="font-size: 38px; color: #115e59; font-weight: 800; letter-spacing: 0; margin-top: -4px;">Patient Portal</h1>
+        <p style="margin-top: 16px; font-weight: 500; font-size: 14px;">Secure access to appointments, lab reports, billing, and medication guidance.</p>
+      </div>
+
+      <div class="user-icon-container">
+        <!-- SVG User Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+
+    <!-- Right Column (Form) -->
+    <div class="login-right">
+      <h2>Patient Login</h2>
+      
+      <!-- Visual Error Banner Container -->
+      <div id="errorContainer" style="display: none;"></div>
+
+      <form id="patientLoginForm">
+        <div class="form-group">
+          <input type="email" id="email" placeholder="Registered Email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-patient">Open Patient Dashboard</button>
+      </form>
+
+      <div class="login-footer-links">
+        <a href="#">Forgot Password?</a> | <a href="patient-signup.html">First Time User?</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="js/patient-login.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+@import "../style.css";
+
+/* Doctor Login View Stylesheet */
+body {
+  background-color: #2563eb; /* Royal Blue backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  background: #eff6ff; /* Light blue tint */
+  border-radius: 20px;
+  width: 900px;
+  max-width: 95%;
+  min-height: 480px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-left {
+  flex: 1;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-left h1 {
+  font-size: 36px;
+  color: #1e3a8a;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.login-left p {
+  color: #2563eb;
+  font-size: 15px;
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.stethoscope-icon-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d4ed8;
+  margin-top: auto;
+}
+
+.login-right {
+  width: 380px;
+  background: #ffffff;
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid #e2e8f0;
+}
+
+.login-right h2 {
+  font-size: 20px;
+  color: #1e40af;
+  margin-bottom: 28px;
+  font-weight: 800;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  font-weight: 500;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #1d4ed8;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+.btn-doctor {
+  background-color: #1d4ed8;
+  color: white;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-doctor:hover {
+  background-color: #1e3a8a;
+}

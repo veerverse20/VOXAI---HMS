@@ -1,112 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VoxAI - Voice Assistant Console</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    /* Styling wave visualizer bars */
-    .wave-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      height: 40px;
-    }
-    .wave-bar {
-      width: 4px;
-      height: 8px;
-      background-color: #6366f1;
-      border-radius: 2px;
-      transition: height 0.15s ease;
-    }
-    .wave-bar.active {
-      animation: wave-bounce 0.8s ease infinite alternate;
-    }
-    .wave-bar.active:nth-child(2) { animation-delay: 0.1s; }
-    .wave-bar.active:nth-child(3) { animation-delay: 0.25s; }
-    .wave-bar.active:nth-child(4) { animation-delay: 0.4s; }
-    .wave-bar.active:nth-child(5) { animation-delay: 0.55s; }
-
-    @keyframes wave-bounce {
-      0% { height: 8px; }
-      100% { height: 35px; }
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: #374151;
-      color: #9ca3af;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      letter-spacing: 0.05em;
-    }
-    .status-badge.recording {
-      background-color: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxAI - Voice Assistant Console</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/admin-dash.css"> 
+    <style>
+        /* Base UI layout alignment to match your pristine theme grid */
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .intake-card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .status-badge-container {
+            margin-bottom: 1.5rem;
+        }
+        .badge {
+            background-color: #374151;
+            color: #9ca3af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        h2 {
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            margin: 0 0 0.5rem 0;
+            color: #ffffff;
+        }
+        p.sub-instruction {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0 0 2rem 0;
+        }
+        .wave-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.35rem;
+            margin-bottom: 2rem;
+            height: 10px;
+        }
+        .wave-dots span {
+            width: 6px;
+            height: 6px;
+            background-color: #4f46e5;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .mic-wrapper {
+            margin-bottom: 2.5rem;
+            display: inline-block;
+        }
+        .circular-mic-class {
+            width: 80px;
+            height: 80px;
+            background-color: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+        .circular-mic-class svg {
+            width: 32px;
+            height: 32px;
+            fill: #ffffff;
+        }
+        .output-label {
+            text-align: left;
+            font-size: 0.75rem;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        textarea.transcription-box {
+            width: 100%;
+            height: 120px;
+            background-color: #030712;
+            border: 1px solid #1f2937;
+            border-radius: 0.75rem;
+            color: #ffffff;
+            padding: 1rem;
+            box-sizing: border-box;
+            resize: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        textarea.transcription-box:focus {
+            border-color: #6366f1;
+        }
+        .action-footer {
+            display: flex;
+            gap: 1rem;
+        }
+        button.execute-command-btn {
+            flex: 1;
+            background-color: #6366f1;
+            color: #ffffff;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button.execute-command-btn:hover {
+            background-color: #4f46e5;
+        }
+        button.back-btn {
+            background-color: #1f2937;
+            color: #9ca3af;
+            border: 1px solid #374151;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        button.back-btn:hover {
+            background-color: #374151;
+            color: #ffffff;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-center items-center p-6 font-sans select-none">
+<body>
 
-  <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center gap-6 shadow-2xl">
-    
-    <!-- Top info header -->
-    <div class="text-center flex flex-col items-center gap-2">
-      <div id="statusBadge" class="status-badge">Standby</div>
-      <h1 class="text-2xl font-bold uppercase tracking-wider font-sans mt-2">VoxAI Intake Terminal</h1>
-      <p class="text-xs text-slate-500 font-semibold leading-relaxed">
-        Speak commands directly, or type them into the transcription field to execute.
-      </p>
+    <div class="intake-card">
+        <div class="status-badge-container">
+            <div class="badge" id="voxaiStatusBadge">STANDBY</div>
+        </div>
+        
+        <h2>VOXAI INTAKE TERMINAL</h2>
+        <p class="sub-instruction">Speak commands directly, or type them into the transcription field to execute.</p>
+        
+        <div class="wave-dots" id="waveDots">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        
+        <div class="mic-wrapper">
+            <div class="circular-mic-class" id="micButton">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="output-label">Speech Transcription Output</div>
+        <textarea class="transcription-box" id="whisperTranscription" placeholder="open patient"></textarea>
+        
+        <div class="action-footer">
+            <button class="execute-command-btn" id="executeBtn">EXECUTE COMMAND</button>
+            <button class="back-btn" id="backBtn">BACK</button>
+        </div>
     </div>
 
-    <!-- Active pulse Waveform Visualizer -->
-    <div class="wave-container my-2">
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-    </div>
+    <script src="voxai.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const micContainer = document.getElementById('micButton');
+        const executeBtn = document.getElementById('executeBtn');
+        const textarea = document.getElementById('whisperTranscription');
+        const backBtn = document.getElementById('backBtn');
+        const statusBadge = document.getElementById('voxaiStatusBadge');
 
-    <!-- Microphone Intake trigger -->
-    <button id="micBtn" class="w-20 h-20 rounded-full bg-indigo-600 hover:bg-indigo-500 border-4 border-indigo-700/50 flex items-center justify-center cursor-pointer shadow-xl transition-all duration-300 transform active:scale-95 text-white">
-      <i data-lucide="mic" class="w-8 h-8"></i>
-    </button>
+        // 1. Core Pointer Input Injection Validation
+        if (micContainer) {
+          console.log("VoxAI: Microphone input component targeted successfully.");
+          micContainer.style.cursor = "pointer";
+          
+          micContainer.onclick = async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (!window.voxAI) {
+              console.error("VoxAI Engine interface link is missing from global runtime scopes.");
+              alert("System asset initialization error: 'js/voxai.js' missing or path broken.");
+              return;
+            }
 
-    <!-- Text area for live Speech-to-Text transcriptions -->
-    <div class="w-full flex flex-col gap-2">
-      <label class="text-[9px] font-mono uppercase tracking-widest text-slate-500 font-bold">Speech Transcription Output</label>
-      <textarea id="transcriptionText" class="w-full h-28 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs leading-relaxed text-slate-300 focus:outline-none focus:border-indigo-500 font-semibold resize-none outline-none font-mono" placeholder="Ingested speech transcript details display here. Tap the mic above to speak..."></textarea>
-    </div>
+            if (window.voxAI.isRecording) {
+              console.log("VoxAI: Closing microphone capture stream.");
+              window.voxAI.stopListening();
+              if (statusBadge) {
+                statusBadge.textContent = "STANDBY";
+                statusBadge.style.backgroundColor = "";
+                statusBadge.style.color = "";
+              }
+            } else {
+              console.log("VoxAI: Opening microphone hardware audio stream.");
+              if (statusBadge) {
+                statusBadge.textContent = "LISTENING";
+                statusBadge.style.backgroundColor = "#ef4444";
+                statusBadge.style.color = "#ffffff";
+              }
+              window.voxAI.startListening(micContainer);
+            }
+          };
+        }
 
-    <!-- Actions button -->
-    <div class="w-full flex gap-3">
-      <button id="processBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold p-3 text-xs uppercase rounded-xl tracking-wider transition-colors cursor-pointer shadow-md">
-        Execute Command
-      </button>
-      
-      <button onclick="window.history.back()" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs uppercase font-bold rounded-xl transition-colors cursor-pointer">
-        Back
-      </button>
-    </div>
+        // 2. Manual Input Field Execution Binding
+        if (executeBtn) {
+          executeBtn.onclick = (e) => {
+            e.preventDefault();
+            if (textarea && window.voxAI) {
+              const manualText = textarea.value.trim();
+              console.log("VoxAI: Direct submission text received ->", manualText);
+              if (manualText) {
+                window.voxAI.parseAndExecute(manualText);
+              } else {
+                window.voxAI.speak("Please type a command string first.");
+              }
+            }
+          };
+        }
 
-  </div>
-
-  <script type="module" src="script.js"></script>
-  <script type="module" src="voxai.js"></script>
-  <script type="module">
-    document.addEventListener("DOMContentLoaded", () => {
-      lucide.createIcons();
-    });
-  </script>
+        // 3. Operational Routing Control Configuration
+        if (backBtn) {
+          backBtn.onclick = (e) => {
+            e.preventDefault();
+            window.history.back();
+          };
+        }
+      });
+    </script>
 </body>
 </html>
